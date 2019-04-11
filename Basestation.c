@@ -24,23 +24,24 @@ void dfs(int curr_x,int curr_y,int count,int ans)
          max_ans=ans;
         }
          return;
-    } 
+    }
     int z;
     if(curr_y%2==0)
         z=1;
     else
         z=0;
-    visited[curr_x][curr_y]=1;   
+
+    visited[curr_x][curr_y]=1;
     for(int i=0;i<6;i++)
     {
       if(visited[curr_x+x[z][i]][curr_y+y[z][i]]==0 && curr_x+x[z][i]>=0 && curr_x+x[z][i]<n && curr_y+y[z][i]>=0 && curr_y+y[z][i]<m)
       {
+          visited[curr_x+x[z][i]][curr_y+y[z][i]]=1;
           dfs(curr_x,curr_y,count+1,ans+arr[curr_x+x[z][i]][curr_y+y[z][i]]);
           dfs(curr_x+x[z][i],curr_y+y[z][i],count+1,ans+arr[curr_x+x[z][i]][curr_y+y[z][i]]);
           visited[curr_x+x[z][i]][curr_y+y[z][i]]=0;
       }
     }
-    
 }
 
 
@@ -50,21 +51,26 @@ int main(void)
     scanf("%d",&t);
     while(t--)
     {
+        max_ans=0;
         scanf("%d",&n);
         scanf("%d",&m);
         for(int i=0;i<n;i++)
-         for(int j=0;j<m;j++)
+         for(int j=0;j<m;j++){
          scanf("%d",&arr[i][j]);
+         visited[i][j]=0;
+         }
 
         for(int i=0;i<n;i++)
          for(int j=0;j<m;j++){
-             visited[i][j]=0;
+             visited[i][j]=1;
            //  printf("started at :%d %d\n",i,j);
             dfs(i,j,1,arr[i][j]);
+            visited[i][j]=0;
+
          }
-         printf("%d\n",max_ans);
+         printf("%d\n",max_ans*max_ans);
     }
 
     return 0;
-    
+
 }
